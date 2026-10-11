@@ -4,205 +4,261 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KickTools – Fußball-Tools</title>
+<meta name="theme-color" content="#101710">
+<title>KickTools – Deine Fußball-Plattform</title>
 <style>
+:root{--bg:#101710;--panel:#19251b;--panel2:#202f23;--green:#b8f34a;--text:#f4f7ef;--muted:#aab7a7;--line:#344536}
 *{box-sizing:border-box}
-body{margin:0;background:#0b1220;color:#f4f7fb;font-family:Arial,sans-serif}
-header{padding:22px 18px;border-bottom:1px solid #293447}
-.logo{font-size:27px;font-weight:800;color:#9be564}
-header p,.muted{color:#aab5c7}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-nav a{color:#e9f3ff;text-decoration:none;background:#202d40;padding:10px 13px;border-radius:8px}
-main{max-width:950px;margin:auto;padding:20px 14px}
-.panel{background:#151f30;border:1px solid #2a394e;border-radius:15px;padding:17px;margin-bottom:18px}
-h2{margin-top:0}
-label{display:block;margin:12px 0 6px;color:#cbd5e1}
-input,select,button{font:inherit;padding:10px;border-radius:8px;border:1px solid #46556a}
-input,select{background:#0b1220;color:white;width:100%;min-width:0}
-button{background:#9be564;color:#10200a;border:0;font-weight:bold;cursor:pointer}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.pitch{position:relative;background:#267943;border:3px solid white;border-radius:7px;aspect-ratio:.72;max-height:650px;margin:18px auto;overflow:hidden}
-.pitch:before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid #ffffffaa}
-.pitch:after{content:"";position:absolute;width:28%;aspect-ratio:1;left:36%;top:36%;border:2px solid #ffffffaa;border-radius:50%}
-.boxline{position:absolute;left:22%;width:56%;height:13%;border:2px solid #ffffffaa}
-.boxline.top{top:0;border-top:0}.boxline.bottom{bottom:0;border-bottom:0}
-.players{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:7px 2px}
-.line{display:flex;justify-content:space-evenly;align-items:center;width:100%;gap:2px}
-.player{display:flex;flex-direction:column;align-items:center;width:24%;min-width:0;gap:3px}
-.shirt{display:grid;place-items:center;background:#e9f3ff;color:#10233c;border-radius:9px 9px 4px 4px;width:33px;height:29px;font-size:11px;font-weight:bold;border:2px solid white}
-.player input{font-size:10px;padding:5px 1px;text-align:center;border:0;background:#143f29;min-width:0;width:100%;border-radius:5px}
-.tablewrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}
-th,td{padding:10px 7px;text-align:center;border-bottom:1px solid #344258}
-th{color:#9be564}
-td:first-child,th:first-child{text-align:left}
-.scoreline{display:grid;grid-template-columns:minmax(0,1fr) 48px 14px 48px minmax(0,1fr);align-items:center;gap:6px;margin:12px 0}
-.scoreline input{padding:8px;text-align:center}
-.scoreline span{text-align:center}
-.scoreline .teamname{font-size:13px;overflow:hidden;text-overflow:ellipsis}
-.note{font-size:13px;line-height:1.5;color:#aab5c7}
-footer{text-align:center;color:#9eacc0;padding:24px;font-size:13px}
-@media(min-width:650px){.pitch{aspect-ratio:.95}.player{width:18%}.shirt{width:42px;height:36px}.scoreline{grid-template-columns:minmax(0,1fr) 60px 18px 60px minmax(0,1fr)}}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif}
+header{padding:25px 5%;background:linear-gradient(120deg,#17291a,#263d24);border-bottom:1px solid var(--line)}
+.logo{font-size:27px;font-weight:900;letter-spacing:-1px}.logo span{color:var(--green)}
+header p{color:var(--muted);margin:5px 0 0}
+nav{display:flex;gap:8px;overflow-x:auto;padding:12px 5%;background:#131d14;border-bottom:1px solid var(--line)}
+button,.navbtn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}
+button:hover,.navbtn:hover{border-color:var(--green)}
+nav button.active,.primary{background:var(--green);color:#15200f;border-color:var(--green)}
+main{max-width:1100px;margin:auto;padding:22px 16px 55px}
+section.page{display:none}section.page.active{display:block}
+h1{font-size:clamp(25px,5vw,36px);margin:10px 0}h2{font-size:21px;margin-top:0}
+p{line-height:1.5}.muted,.hint{color:var(--muted);font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+input,select,textarea{width:100%;background:#101910;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:11px;font:inherit;min-width:0}
+input[type=number]{max-width:100px}
+.field{flex:1;min-width:130px}
+.pitch{position:relative;width:100%;max-width:650px;margin:18px auto;background:#367c3d;border:3px solid #d8f2d3;border-radius:8px;aspect-ratio:0.76;overflow:hidden;background-image:repeating-linear-gradient(0deg,#367c3d 0,#367c3d 10%,#317338 10%,#317338 20%)}
+.pitch:before{content:"";position:absolute;inset:4%;border:2px solid #d8f2d3;pointer-events:none}
+.pitch:after{content:"";position:absolute;left:25%;right:25%;top:4%;height:12%;border:2px solid #d8f2d3;border-top:0;pointer-events:none}
+.centerline{position:absolute;top:50%;left:4%;right:4%;border-top:2px solid #d8f2d3}
+.circle{position:absolute;width:28%;aspect-ratio:1;border:2px solid #d8f2d3;border-radius:50%;left:36%;top:36%}
+.player{position:absolute;transform:translate(-50%,-50%);width:72px;text-align:center;color:white;font-size:11px;z-index:2}
+.shirt{display:grid;place-items:center;margin:auto auto 4px;width:32px;height:32px;border-radius:50%;background:var(--green);color:#15200f;border:2px solid white;font-weight:900;font-size:13px}
+.player input{padding:4px 2px;text-align:center;background:#142017d9;border-color:#e3f6dc;color:white;font-size:10px}
+.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:500px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:center}th{color:var(--green);font-size:12px}td:first-child,th:first-child{text-align:left}
+.match{display:grid;grid-template-columns:minmax(65px,1fr) 65px 65px minmax(65px,1fr);gap:7px;align-items:center;margin:12px 0}
+.match input{padding:9px;text-align:center}
+.exercise{display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:8px;align-items:end;margin:10px 0}
+.exercise button{padding:10px}
+.stat{background:var(--panel2);padding:15px;border-radius:12px}
+.stat strong{font-size:24px;color:var(--green);display:block}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px;border-top:1px solid var(--line)}
+@media(max-width:550px){.pitch{max-width:100%}.player{width:58px}.shirt{width:27px;height:27px}.exercise{grid-template-columns:1fr 1fr}.exercise .wide{grid-column:1/-1}.match{grid-template-columns:minmax(50px,1fr) 48px 48px minmax(50px,1fr);gap:4px}.match input{padding:8px 3px;font-size:13px}}
 </style>
 </head>
 <body>
 <header>
- <div class="logo">⚽ KickTools</div>
- <p>Plane dein Spiel. Stärke dein Team.</p>
- <nav>
-  <a href="#aufstellung">Aufstellung</a>
-  <a href="#tabelle">Tabellenrechner</a>
- </nav>
+  <div class="logo">⚽ Kick<span>Tools</span></div>
+  <p>Deine digitalen Tools für Fußball, Training und Turniere.</p>
 </header>
+<nav>
+  <button class="active" data-page="home">Übersicht</button>
+  <button data-page="lineup">Aufstellung</button>
+  <button data-page="tournament">Turnier</button>
+  <button data-page="training">Training</button>
+  <button data-page="calculator">Rechner</button>
+</nav>
 <main>
-<section class="panel" id="aufstellung">
- <h2>⚽ Aufstellungsplaner</h2>
- <p class="note">Wähle deine Formation und bearbeite die Spielernamen direkt auf dem Spielfeld.</p>
- <div class="grid">
-  <div><label for="team">Teamname</label><input id="team" placeholder="Mein Fußballteam" maxlength="50"></div>
-  <div><label for="formation">Formation</label>
-   <select id="formation">
-    <option value="433">4-3-3</option>
-    <option value="442">4-4-2</option>
-    <option value="4231">4-2-3-1</option>
-    <option value="343">3-4-3</option>
-    <option value="352">3-5-2</option>
-    <option value="532">5-3-2</option>
-    <option value="541">5-4-1</option>
-    <option value="4141">4-1-4-1</option>
-    <option value="4222">4-2-2-2</option>
-    <option value="3412">3-4-1-2</option>
-    <option value="3421">3-4-2-1</option>
-    <option value="451">4-5-1</option>
-    <option value="4321">4-3-2-1</option>
-    <option value="343diamond">3-3-1-3</option>
-   </select>
+<section id="home" class="page active">
+  <p class="hint">DEINE FUSSBALL-TOOLS AN EINEM ORT</p>
+  <h1>Mehr planen. Besser spielen.</h1>
+  <p class="muted">Plane deine Mannschaft, organisiere Turniere und bereite dein Training vor – direkt im Browser.</p>
+  <div class="grid">
+    <div class="card"><h2>📋 Aufstellungsplaner</h2><p class="muted">Formationen auswählen, Spielernamen eintragen und Aufstellungen speichern.</p><button class="primary" onclick="go('lineup')">Aufstellung planen →</button></div>
+    <div class="card"><h2>🏆 Turnierrechner</h2><p class="muted">Ergebnisse eintragen und Punkte, Tore und Tabellenplätze automatisch berechnen.</p><button class="primary" onclick="go('tournament')">Turnier erstellen →</button></div>
+    <div class="card"><h2>🎯 Trainingsplaner</h2><p class="muted">Übungen und Trainingsdauer übersichtlich zusammenstellen.</p><button class="primary" onclick="go('training')">Training planen →</button></div>
+    <div class="card"><h2>📐 Fußballrechner</h2><p class="muted">Schussgeschwindigkeit, Trainingszeit und weitere Werte berechnen.</p><button class="primary" onclick="go('calculator')">Rechner öffnen →</button></div>
   </div>
- </div>
- <h3 id="pitchTitle">Meine Aufstellung</h3>
- <div class="pitch"><div class="boxline top"></div><div class="boxline bottom"></div><div class="players" id="players"></div></div>
- <button id="reset" type="button">Namen zurücksetzen</button>
+  <div class="card"><h2>Dein persönlicher Arbeitsbereich</h2><p class="muted">Deine Änderungen werden automatisch in diesem Browser gespeichert. Nutze möglichst dasselbe Gerät und denselben Browser, um deine Daten wiederzufinden.</p><p id="saveStatus" class="hint">Speicherung bereit.</p></div>
 </section>
 
-<section class="panel" id="tabelle">
- <h2>🏆 Tabellenrechner</h2>
- <p class="note">Trage vier Teamnamen und die Ergebnisse der sechs direkten Duelle ein. Die Tabelle berechnet sich automatisch nach Punkten, Tordifferenz und erzielten Toren.</p>
- <h3>1. Teams</h3>
- <div class="grid" id="teams"></div>
- <h3>2. Spielergebnisse</h3>
- <div id="matches"></div>
- <button id="clearScores" type="button">Ergebnisse zurücksetzen</button>
- <h3>3. Tabelle</h3>
- <div class="tablewrap">
- <table>
-  <thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th></tr></thead>
-  <tbody id="standings"></tbody>
- </table>
- </div>
- <p class="note">Regel: Sieg = 3 Punkte, Unentschieden = 1 Punkt. Bei Punktgleichheit entscheiden Tordifferenz und erzielte Tore. Die Tabelle verwendet die eingegebenen Ergebnisse.</p>
+<section id="lineup" class="page">
+  <p class="hint">MANNSCHAFT & TAKTIK</p><h1>Aufstellungsplaner</h1>
+  <div class="card">
+    <div class="grid">
+      <div><label>Teamname</label><input id="teamName" value="Meine Mannschaft"></div>
+      <div><label>Formation</label><select id="formation">
+        <option>4-3-3</option><option>4-4-2</option><option>4-2-3-1</option><option>3-4-3</option><option>3-5-2</option><option>5-3-2</option><option>5-4-1</option><option>4-1-4-1</option><option>4-2-2-2</option><option>4-3-2-1</option><option>4-5-1</option><option>3-4-1-2</option>
+      </select></div>
+    </div>
+    <p class="hint">Tippe auf einen Spielernamen, um ihn zu bearbeiten. Änderungen werden automatisch gespeichert.</p>
+    <div id="pitch" class="pitch"><div class="centerline"></div><div class="circle"></div></div>
+    <div class="row"><button class="primary" onclick="window.print()">Aufstellung drucken / als PDF sichern</button><button onclick="resetLineup()">Aufstellung zurücksetzen</button></div>
+  </div>
 </section>
-<section class="panel">
- <h2>🚀 Weitere Tools</h2>
- <p>Als Nächstes geplant: Spielplaner, Trainingsplaner und weitere Fußballrechner.</p>
+
+<section id="tournament" class="page">
+  <p class="hint">ERGEBNISSE & TABELLE</p><h1>Turnierrechner</h1>
+  <div class="card">
+    <h2>Teams</h2><p class="muted">Trage vier Teamnamen ein. Die Tabelle wird anhand deiner Ergebnisse berechnet.</p>
+    <div class="grid" id="teamInputs"></div>
+    <div class="row" style="margin-top:15px"><button class="primary" onclick="rebuildMatches()">Spielplan aktualisieren</button><button onclick="resetTournament()">Turnier zurücksetzen</button></div>
+  </div>
+  <div class="card"><h2>Spielergebnisse</h2><div id="matches"></div></div>
+  <div class="card"><h2>Tabelle</h2><div class="tablewrap"><table><thead><tr><th>Pl.</th><th>Mannschaft</th><th>Sp.</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th></tr></thead><tbody id="standings"></tbody></table></div><p class="hint">Sieg = 3 Punkte · Unentschieden = 1 Punkt · Niederlage = 0 Punkte.</p></div>
+</section>
+
+<section id="training" class="page">
+  <p class="hint">VORBEREITUNG & ORGANISATION</p><h1>Trainingsplaner</h1>
+  <div class="card">
+    <div class="grid">
+      <div><label>Trainingstitel</label><input id="trainingTitle" placeholder="z. B. Passspiel und Umschalten"></div>
+      <div><label>Datum</label><input type="date" id="trainingDate"></div>
+      <div><label>Trainingsschwerpunkt</label><select id="trainingFocus"><option>Technik</option><option>Passspiel</option><option>Torschuss</option><option>Ausdauer</option><option>Taktik</option><option>Koordination</option><option>Spielformen</option><option>Regeneration</option></select></div>
+    </div>
+  </div>
+  <div class="card"><h2>Deine Übungen</h2><div id="exercises"></div><div class="row"><button class="primary" onclick="addExercise()">+ Übung hinzufügen</button><button onclick="resetTraining()">Training zurücksetzen</button></div></div>
+  <div class="grid">
+    <div class="stat"><span class="muted">Gesamtdauer</span><strong id="totalDuration">0 Min.</strong></div>
+    <div class="stat"><span class="muted">Anzahl Übungen</span><strong id="exerciseCount">0</strong></div>
+  </div>
+  <div class="card"><label>Notizen / Material</label><textarea id="trainingNotes" rows="4" placeholder="Benötigte Bälle, Hütchen, Gruppeneinteilung ..."></textarea><p class="hint">Dein Trainingsplan wird automatisch gespeichert.</p><button class="primary" onclick="window.print()">Trainingsplan drucken / als PDF sichern</button></div>
+</section>
+
+<section id="calculator" class="page">
+  <p class="hint">ZAHLEN & TRAININGSWERTE</p><h1>Fußballrechner</h1>
+  <div class="card">
+    <h2>Schussgeschwindigkeit</h2><p class="muted">Gib die Entfernung und die Zeit ein, die der Ball für diese Strecke benötigt hat.</p>
+    <div class="grid"><div><label>Entfernung in Metern</label><input id="distance" type="number" min="0" step="0.1" value="20"></div><div><label>Zeit in Sekunden</label><input id="flightTime" type="number" min="0.01" step="0.01" value="0.7"></div></div>
+    <div class="stat" style="margin-top:14px"><span class="muted">Berechnete Durchschnittsgeschwindigkeit</span><strong id="speedResult">102,9 km/h</strong></div><p class="hint">Das ist ein Näherungswert. Ungenaue Zeitmessung und Luftwiderstand beeinflussen das Ergebnis.</p>
+  </div>
+  <div class="card">
+    <h2>Trainingszeit aufteilen</h2><div class="grid"><div><label>Gesamtdauer in Minuten</label><input id="sessionMinutes" type="number" min="1" value="90"></div><div><label>Anteil Aufwärmen in %</label><input id="warmPercent" type="number" min="0" max="100" value="20"></div></div>
+    <div class="grid" style="margin-top:14px"><div class="stat"><span class="muted">Aufwärmen</span><strong id="warmResult">18 Min.</strong></div><div class="stat"><span class="muted">Übriges Training</span><strong id="restResult">72 Min.</strong></div></div>
+  </div>
+  <div class="card"><h2>Torquote</h2><div class="grid"><div><label>Erzielte Tore</label><input id="goals" type="number" min="0" value="12"></div><div><label>Schüsse insgesamt</label><input id="shots" type="number" min="0" value="30"></div></div><div class="stat" style="margin-top:14px"><span class="muted">Trefferquote</span><strong id="accuracyResult">40 %</strong></div></div>
 </section>
 </main>
-<footer>KickTools · Unabhängiges Fußballprojekt</footer>
+<footer>KickTools · Fußball planen, rechnen und organisieren.</footer>
 
 <script>
+const $=id=>document.getElementById(id);
+const KEY="kicktools-complete-v1";
+let state={};
+function go(id){
+ document.querySelectorAll("section.page").forEach(s=>s.classList.toggle("active",s.id===id));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+function save(){
+ try{
+ state.teamName=$("teamName").value;
+ state.formation=$("formation").value;
+ state.playerNames=[...document.querySelectorAll(".player input")].map(x=>x.value);
+ state.tournamentTeams=[...document.querySelectorAll(".team-name")].map(x=>x.value);
+ state.scores=[...document.querySelectorAll(".score")].map(x=>x.value);
+ state.trainingTitle=$("trainingTitle").value;
+ state.trainingDate=$("trainingDate").value;
+ state.trainingFocus=$("trainingFocus").value;
+ state.trainingNotes=$("trainingNotes").value;
+ state.exercises=[...document.querySelectorAll(".exercise")].map(e=>({name:e.querySelector(".ex-name").value,minutes:e.querySelector(".ex-min").value,notes:e.querySelector(".ex-notes").value}));
+ localStorage.setItem(KEY,JSON.stringify(state));
+ $("saveStatus").textContent="✓ Änderungen auf diesem Gerät gespeichert.";
+ }catch(e){$("saveStatus").textContent="Automatische Speicherung ist in diesem Browser nicht verfügbar."}
+}
+function load(){
+ try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){state={}}
+ $("teamName").value=state.teamName||"Meine Mannschaft";
+ $("formation").value=state.formation||"4-3-3";
+ $("trainingTitle").value=state.trainingTitle||"";
+ $("trainingDate").value=state.trainingDate||"";
+ $("trainingFocus").value=state.trainingFocus||"Technik";
+ $("trainingNotes").value=state.trainingNotes||"";
+ renderPitch(state.playerNames||[]);
+ initTournament(state.tournamentTeams,state.scores);
+ renderExercises(state.exercises||[{name:"Aufwärmen",minutes:15,notes:"Locker anlaufen und mobilisieren"},{name:"Passspiel",minutes:20,notes:"Passen und freilaufen"},{name:"Spielform",minutes:30,notes:"Kleinfeldspiel"},{name:"Abschluss",minutes:15,notes:"Torschussübungen"},{name:"Abkühlen",minutes:10,notes:"Auslaufen"}]);
+}
 const formations={
- "433":[1,4,3,3],"442":[1,4,4,2],"4231":[1,4,2,3,1],
- "343":[1,3,4,3],"352":[1,3,5,2],"532":[1,5,3,2],
- "541":[1,5,4,1],"4141":[1,4,1,4,1],
- "4222":[1,4,2,2,2],"3412":[1,3,4,1,2],
- "3421":[1,3,4,2,1],"451":[1,4,5,1],
- "4321":[1,4,3,2,1],"343diamond":[1,3,3,1,3]
+"4-3-3":[[50,88],[18,70],[39,73],[61,73],[82,70],[32,51],[50,56],[68,51],[23,28],[50,22],[77,28]],
+"4-4-2":[[50,88],[18,70],[39,73],[61,73],[82,70],[18,49],[39,52],[61,52],[82,49],[38,27],[62,27]],
+"4-2-3-1":[[50,88],[18,70],[39,73],[61,73],[82,70],[39,61],[61,61],[23,42],[50,40],[77,42],[50,23]],
+"3-4-3":[[50,88],[28,72],[50,75],[72,72],[15,49],[38,55],[62,55],[85,49],[23,29],[50,23],[77,29]],
+"3-5-2":[[50,88],[28,72],[50,75],[72,72],[14,51],[32,57],[50,49],[68,57],[86,51],[38,29],[62,29]],
+"5-3-2":[[50,88],[12,65],[30,72],[50,74],[70,72],[88,65],[30,49],[50,55],[70,49],[38,28],[62,28]],
+"5-4-1":[[50,88],[12,65],[30,72],[50,74],[70,72],[88,65],[18,49],[39,53],[61,53],[82,49],[50,26]],
+"4-1-4-1":[[50,88],[18,70],[39,73],[61,73],[82,70],[50,62],[18,43],[39,48],[61,48],[82,43],[50,25]],
+"4-2-2-2":[[50,88],[18,70],[39,73],[61,73],[82,70],[39,59],[61,59],[34,41],[66,41],[40,25],[60,25]],
+"4-3-2-1":[[50,88],[18,70],[39,73],[61,73],[82,70],[32,53],[50,57],[68,53],[38,38],[62,38],[50,23]],
+"4-5-1":[[50,88],[18,70],[39,73],[61,73],[82,70],[15,49],[33,54],[50,57],[67,54],[85,49],[50,25]],
+"3-4-1-2":[[50,88],[28,72],[50,75],[72,72],[15,49],[38,55],[62,55],[85,49],[50,39],[38,25],[62,25]]
 };
-const players=document.getElementById("players");
-function draw(){
- players.innerHTML="";
- let number=1;
- formations[document.getElementById("formation").value].forEach((count,row)=>{
-  const line=document.createElement("div");line.className="line";
-  for(let i=0;i<count;i++){
-   const p=document.createElement("div");p.className="player";
-   const shirt=document.createElement("div");shirt.className="shirt";
-   shirt.textContent=row===0?"TW":number;
-   const name=document.createElement("input");
-   name.placeholder=row===0?"Torwart":"Spieler "+number;
-   name.setAttribute("aria-label","Name von Spieler "+number);
-   name.maxLength=24;
-   p.append(shirt,name);line.append(p);number++;
-  }
-  players.append(line);
+function renderPitch(names){
+ const pitch=$("pitch");pitch.querySelectorAll(".player").forEach(x=>x.remove());
+ (formations[$("formation").value]||formations["4-3-3"]).forEach((pos,i)=>{
+  const el=document.createElement("div");el.className="player";el.style.left=pos[0]+"%";el.style.top=(100-pos[1])+"%";
+  const shirt=document.createElement("div");shirt.className="shirt";shirt.textContent=i===0?"TW":i;
+  const input=document.createElement("input");input.value=names[i]||(["Torwart","Verteidiger","Verteidiger","Verteidiger","Verteidiger","Mittelfeld","Mittelfeld","Mittelfeld","Stürmer","Stürmer","Stürmer"][i]||"Spieler "+(i+1));input.setAttribute("aria-label","Spieler "+(i+1));
+  input.addEventListener("input",save);el.append(shirt,input);pitch.append(el);
  });
 }
-document.getElementById("formation").addEventListener("change",draw);
-document.getElementById("team").addEventListener("input",e=>{
- document.getElementById("pitchTitle").textContent=e.target.value.trim()||"Meine Aufstellung";
-});
-document.getElementById("reset").addEventListener("click",()=>{
- players.querySelectorAll("input").forEach(i=>i.value="");
-});
+$("formation").addEventListener("change",()=>{renderPitch();save()});
+$("teamName").addEventListener("input",save);
+function resetLineup(){if(!confirm("Aufstellung wirklich zurücksetzen?"))return;$("teamName").value="Meine Mannschaft";renderPitch([]);save()}
 
-const teamsEl=document.getElementById("teams");
-const matchesEl=document.getElementById("matches");
-const standingsEl=document.getElementById("standings");
-const initialTeams=["Team A","Team B","Team C","Team D"];
-const games=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
-initialTeams.forEach((name,i)=>{
- const wrap=document.createElement("div");
- const label=document.createElement("label");label.textContent="Team "+(i+1);
- const input=document.createElement("input");input.value=name;input.maxLength=35;
- input.dataset.team=i;input.setAttribute("aria-label","Name Team "+(i+1));
- input.addEventListener("input",update);
- wrap.append(label,input);teamsEl.append(wrap);
-});
-games.forEach(([a,b],i)=>{
- const row=document.createElement("div");row.className="scoreline";
- const left=document.createElement("span");left.className="teamname";
- const home=document.createElement("input");home.type="number";home.min=0;home.max=99;home.placeholder="–";
- home.setAttribute("aria-label","Tore Team "+(a+1));
- const dash=document.createElement("span");dash.textContent=":";
- const away=document.createElement("input");away.type="number";away.min=0;away.max=99;away.placeholder="–";
- away.setAttribute("aria-label","Tore Team "+(b+1));
- const right=document.createElement("span");right.className="teamname";
- home.addEventListener("input",update);away.addEventListener("input",update);
- home.dataset.game=i;away.dataset.game=i;
- row.append(left,home,dash,away,right);matchesEl.append(row);
-});
-function update(){
- const names=[...teamsEl.querySelectorAll("input")].map((el,i)=>el.value.trim()||"Team "+(i+1));
- [...matchesEl.children].forEach((row,i)=>{
-  row.children[0].textContent=names[games[i][0]];
-  row.children[4].textContent=names[games[i][1]];
- });
- const stats=names.map((name,i)=>({name,i,played:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}));
- games.forEach(([a,b],i)=>{
-  const row=matchesEl.children[i];
-  const hs=row.children[1].value,as=row.children[3].value;
-  if(hs===""||as===""||Number(hs)<0||Number(as)<0)return;
-  const h=Number(hs),v=Number(as);
-  if(!Number.isInteger(h)||!Number.isInteger(v)||h>99||v>99)return;
-  const x=stats[a],y=stats[b];
-  x.played++;y.played++;x.gf+=h;x.ga+=v;y.gf+=v;y.ga+=h;
-  if(h>v){x.w++;y.l++;x.pts+=3}
-  else if(h<v){y.w++;x.l++;y.pts+=3}
-  else{x.d++;y.d++;x.pts++;y.pts++}
- });
- stats.sort((x,y)=>y.pts-x.pts||(y.gf-y.ga)-(x.gf-x.ga)||y.gf-x.gf||x.name.localeCompare(y.name));
- standingsEl.innerHTML="";
- stats.forEach((s,i)=>{
-  const tr=document.createElement("tr");
-  [i+1,s.name,s.played,s.w,s.d,s.l,s.gf+":"+s.ga,s.gf-s.ga,s.pts].forEach(v=>{
-   const td=document.createElement("td");td.textContent=v;tr.append(td);
-  });
-  standingsEl.append(tr);
- });
+const defaults=["Team A","Team B","Team C","Team D"];
+const pairings=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+function initTournament(names,scores){
+ const box=$("teamInputs");box.innerHTML="";
+ defaults.forEach((n,i)=>{const wrap=document.createElement("div");wrap.innerHTML='<label>Team '+(i+1)+'</label><input class="team-name">';wrap.querySelector("input").value=(names&&names[i])||n;wrap.querySelector("input").addEventListener("input",()=>{updateMatchNames();renderStandings();save()});box.append(wrap)});
+ buildMatches(scores||[]);
 }
-document.getElementById("clearScores").addEventListener("click",()=>{
- matchesEl.querySelectorAll("input").forEach(i=>i.value="");update();
-});
-draw();update();
+function updateMatchNames(){const names=[...document.querySelectorAll(".team-name")].map(x=>x.value||"Team");document.querySelectorAll(".match").forEach((m,i)=>{m.querySelector(".leftname").textContent=names[pairings[i][0]];m.querySelector(".rightname").textContent=names[pairings[i][1]]})}
+function buildMatches(scores){
+ const box=$("matches");box.innerHTML="";
+ pairings.forEach((p,i)=>{
+  const m=document.createElement("div");m.className="match";
+  const a=document.createElement("span");a.className="leftname";
+  const sa=document.createElement("input");sa.type="number";sa.min=0;sa.className="score";sa.placeholder="–";sa.setAttribute("aria-label","Tore Team links");
+  const sb=document.createElement("input");sb.type="number";sb.min=0;sb.className="score";sb.placeholder="–";sb.setAttribute("aria-label","Tore Team rechts");
+  const b=document.createElement("span");b.className="rightname";
+  sa.value=scores[i*2]??"";sb.value=scores[i*2+1]??"";
+  [sa,sb].forEach(x=>x.addEventListener("input",()=>{renderStandings();save()}));
+  m.append(a,sa,sb,b);box.append(m);
+ });updateMatchNames();renderStandings();
+}
+function rebuildMatches(){if(!confirm("Spielplan neu erstellen? Die bisherigen Ergebnisse werden gelöscht."))return;buildMatches([]);save()}
+function renderStandings(){
+ const names=[...document.querySelectorAll(".team-name")].map(x=>x.value.trim()||"Team");
+ const teams=names.map((name,i)=>({name,i,played:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}));
+ const matches=[...document.querySelectorAll(".match")];
+ matches.forEach((m,k)=>{
+  const a=m.querySelectorAll(".score")[0].value,b=m.querySelectorAll(".score")[1].value;
+  if(a===""||b===""||a<0||b<0)return;
+  const x=Number(a),y=Number(b),t1=teams[pairings[k][0]],t2=teams[pairings[k][1]];
+  t1.played++;t2.played++;t1.gf+=x;t1.ga+=y;t2.gf+=y;t2.ga+=x;
+  if(x>y){t1.w++;t1.pts+=3;t2.l++}else if(y>x){t2.w++;t2.pts+=3;t1.l++}else{t1.d++;t2.d++;t1.pts++;t2.pts++}
+ });
+ teams.forEach(t=>t.gd=t.gf-t.ga);
+ teams.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf||a.name.localeCompare(b.name,"de"));
+ $("standings").innerHTML="";
+ teams.forEach((t,i)=>{const tr=document.createElement("tr");[i+1,t.name,t.played,t.w,t.d,t.l,t.gf+":"+t.ga,(t.gd>0?"+":"")+t.gd,t.pts].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});$("standings").append(tr)});
+}
+function resetTournament(){if(!confirm("Alle Turnierdaten löschen?"))return;initTournament(defaults,[]);save()}
+
+function renderExercises(items){
+ const box=$("exercises");box.innerHTML="";
+ items.forEach(item=>{
+  const e=document.createElement("div");e.className="exercise";
+  e.innerHTML='<div class="wide"><label>Übung</label><input class="ex-name" placeholder="Name der Übung"></div><div><label>Minuten</label><input class="ex-min" type="number" min="0" value="10"></div><div class="wide"><label>Beschreibung</label><input class="ex-notes" placeholder="Ablauf / Material"></div><button aria-label="Übung löschen">✕</button>';
+  e.querySelector(".ex-name").value=item.name||"";e.querySelector(".ex-min").value=item.minutes??10;e.querySelector(".ex-notes").value=item.notes||"";
+  e.querySelectorAll("input").forEach(x=>x.addEventListener("input",()=>{updateDuration();save()}));
+  e.querySelector("button").addEventListener("click",()=>{e.remove();updateDuration();save()});
+  box.append(e);
+ });updateDuration();
+}
+function addExercise(){const items=[...document.querySelectorAll(".exercise")].map(e=>({name:e.querySelector(".ex-name").value,minutes:e.querySelector(".ex-min").value,notes:e.querySelector(".ex-notes").value}));items.push({name:"Neue Übung",minutes:10,notes:""});renderExercises(items);save()}
+function updateDuration(){let total=0;document.querySelectorAll(".ex-min").forEach(x=>total+=Math.max(0,Number(x.value)||0));$("totalDuration").textContent=total+" Min.";$("exerciseCount").textContent=document.querySelectorAll(".exercise").length}
+function resetTraining(){if(!confirm("Trainingsplan zurücksetzen?"))return;renderExercises([]);$("trainingTitle").value="";$("trainingDate").value="";$("trainingNotes").value="";save()}
+["trainingTitle","trainingDate","trainingFocus","trainingNotes"].forEach(id=>$(id).addEventListener("input",save));
+["distance","flightTime"].forEach(id=>$(id).addEventListener("input",calcSpeed));
+function calcSpeed(){const d=Number($("distance").value),t=Number($("flightTime").value);$("speedResult").textContent=d>=0&&t>0?(d/t*3.6).toLocaleString("de-DE",{maximumFractionDigits:1})+" km/h":"–"}
+function calcSession(){const total=Math.max(0,Number($("sessionMinutes").value)||0),p=Math.min(100,Math.max(0,Number($("warmPercent").value)||0));$("warmResult").textContent=Math.round(total*p/100)+" Min.";$("restResult").textContent=Math.round(total*(1-p/100))+" Min."}
+["sessionMinutes","warmPercent"].forEach(id=>$(id).addEventListener("input",calcSession));
+function calcAccuracy(){const g=Math.max(0,Number($("goals").value)||0),s=Math.max(0,Number($("shots").value)||0);$("accuracyResult").textContent=s?(g/s*100).toLocaleString("de-DE",{maximumFractionDigits:1})+" %":"–"}
+["goals","shots"].forEach(id=>$(id).addEventListener("input",calcAccuracy));
+load();calcSpeed();calcSession();calcAccuracy();
 </script>
 </body>
 </html>
