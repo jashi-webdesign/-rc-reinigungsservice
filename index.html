@@ -14,8 +14,8 @@ header{padding:25px 5%;background:linear-gradient(120deg,#17291a,#263d24);border
 .logo{font-size:27px;font-weight:900;letter-spacing:-1px}.logo span{color:var(--green)}
 header p{color:var(--muted);margin:5px 0 0}
 nav{display:flex;gap:8px;overflow-x:auto;padding:12px 5%;background:#131d14;border-bottom:1px solid var(--line)}
-button,.navbtn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}
-button:hover,.navbtn:hover{border-color:var(--green)}
+button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}
+button:hover{border-color:var(--green)}
 nav button.active,.primary{background:var(--green);color:#15200f;border-color:var(--green)}
 main{max-width:1100px;margin:auto;padding:22px 16px 55px}
 section.page{display:none}section.page.active{display:block}
@@ -27,15 +27,14 @@ p{line-height:1.5}.muted,.hint{color:var(--muted);font-size:13px}
 label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
 input,select,textarea{width:100%;background:#101910;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:11px;font:inherit;min-width:0}
 input[type=number]{max-width:100px}
-.field{flex:1;min-width:130px}
 .pitch{position:relative;width:100%;max-width:650px;margin:18px auto;background:#367c3d;border:3px solid #d8f2d3;border-radius:8px;aspect-ratio:0.76;overflow:hidden;background-image:repeating-linear-gradient(0deg,#367c3d 0,#367c3d 10%,#317338 10%,#317338 20%)}
 .pitch:before{content:"";position:absolute;inset:4%;border:2px solid #d8f2d3;pointer-events:none}
 .pitch:after{content:"";position:absolute;left:25%;right:25%;top:4%;height:12%;border:2px solid #d8f2d3;border-top:0;pointer-events:none}
-.centerline{position:absolute;top:50%;left:4%;right:4%;border-top:2px solid #d8f2d3}
-.circle{position:absolute;width:28%;aspect-ratio:1;border:2px solid #d8f2d3;border-radius:50%;left:36%;top:36%}
+.centerline{position:absolute;top:50%;left:4%;right:4%;border-top:2px solid #d8f2d3;pointer-events:none}
+.circle{position:absolute;width:28%;aspect-ratio:1;border:2px solid #d8f2d3;border-radius:50%;left:36%;top:36%;pointer-events:none}
 .player{position:absolute;transform:translate(-50%,-50%);width:72px;text-align:center;color:white;font-size:11px;z-index:2}
 .shirt{display:grid;place-items:center;margin:auto auto 4px;width:32px;height:32px;border-radius:50%;background:var(--green);color:#15200f;border:2px solid white;font-weight:900;font-size:13px}
-.player input{padding:4px 2px;text-align:center;background:#142017d9;border-color:#e3f6dc;color:white;font-size:10px}
+.player input{padding:4px 2px;text-align:center;background:#142017;border-color:#e3f6dc;color:white;font-size:10px}
 .tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:500px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:center}th{color:var(--green);font-size:12px}td:first-child,th:first-child{text-align:left}
 .match{display:grid;grid-template-columns:minmax(65px,1fr) 65px 65px minmax(65px,1fr);gap:7px;align-items:center;margin:12px 0}
 .match input{padding:9px;text-align:center}
@@ -45,6 +44,7 @@ input[type=number]{max-width:100px}
 .stat strong{font-size:24px;color:var(--green);display:block}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:25px;border-top:1px solid var(--line)}
 @media(max-width:550px){.pitch{max-width:100%}.player{width:58px}.shirt{width:27px;height:27px}.exercise{grid-template-columns:1fr 1fr}.exercise .wide{grid-column:1/-1}.match{grid-template-columns:minmax(50px,1fr) 48px 48px minmax(50px,1fr);gap:4px}.match input{padding:8px 3px;font-size:13px}}
+@media print{body{background:white;color:black}header,nav,footer,button{display:none!important}section.page{display:none!important}section.page.active{display:block!important}.card{background:white;color:black;border:1px solid #ccc}.pitch{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
 </style>
 </head>
 <body>
@@ -133,31 +133,104 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:25px;border-t
 <footer>KickTools · Fußball planen, rechnen und organisieren.</footer>
 
 <script>
+"use strict";
 const $=id=>document.getElementById(id);
 const KEY="kicktools-complete-v1";
 let state={};
+
 function go(id){
  document.querySelectorAll("section.page").forEach(s=>s.classList.toggle("active",s.id===id));
  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
  window.scrollTo({top:0,behavior:"smooth"});
 }
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+
 function save(){
  try{
- state.teamName=$("teamName").value;
- state.formation=$("formation").value;
- state.playerNames=[...document.querySelectorAll(".player input")].map(x=>x.value);
- state.tournamentTeams=[...document.querySelectorAll(".team-name")].map(x=>x.value);
- state.scores=[...document.querySelectorAll(".score")].map(x=>x.value);
- state.trainingTitle=$("trainingTitle").value;
- state.trainingDate=$("trainingDate").value;
- state.trainingFocus=$("trainingFocus").value;
- state.trainingNotes=$("trainingNotes").value;
- state.exercises=[...document.querySelectorAll(".exercise")].map(e=>({name:e.querySelector(".ex-name").value,minutes:e.querySelector(".ex-min").value,notes:e.querySelector(".ex-notes").value}));
- localStorage.setItem(KEY,JSON.stringify(state));
- $("saveStatus").textContent="✓ Änderungen auf diesem Gerät gespeichert.";
- }catch(e){$("saveStatus").textContent="Automatische Speicherung ist in diesem Browser nicht verfügbar."}
+  state.teamName=$("teamName").value;
+  state.formation=$("formation").value;
+  state.playerNames=[...document.querySelectorAll(".player input")].map(x=>x.value);
+  state.tournamentTeams=[...document.querySelectorAll(".team-name")].map(x=>x.value);
+  state.scores=[...document.querySelectorAll(".score")].map(x=>x.value);
+  state.trainingTitle=$("trainingTitle").value;
+  state.trainingDate=$("trainingDate").value;
+  state.trainingFocus=$("trainingFocus").value;
+  state.trainingNotes=$("trainingNotes").value;
+  state.exercises=[...document.querySelectorAll(".exercise")].map(e=>({
+   name:e.querySelector(".ex-name").value,
+   minutes:e.querySelector(".ex-min").value,
+   notes:e.querySelector(".ex-notes").value
+  }));
+  localStorage.setItem(KEY,JSON.stringify(state));
+  $("saveStatus").textContent="✓ Änderungen auf diesem Gerät gespeichert.";
+ }catch(e){
+  $("saveStatus").textContent="Automatische Speicherung ist in diesem Browser nicht verfügbar.";
+ }
 }
+
+const formations={
+"4-3-3":[[50,12],[18,30],[39,27],[61,27],[82,30],[32,49],[50,44],[68,49],[23,72],[50,78],[77,72]],
+"4-4-2":[[50,12],[18,30],[39,27],[61,27],[82,30],[18,51],[39,48],[61,48],[82,51],[38,73],[62,73]],
+"4-2-3-1":[[50,12],[18,30],[39,27],[61,27],[82,30],[39,39],[61,39],[23,58],[50,60],[77,58],[50,77]],
+"3-4-3":[[50,12],[28,28],[50,25],[72,28],[15,51],[38,45],[62,45],[85,51],[23,71],[50,77],[77,71]],
+"3-5-2":[[50,12],[28,28],[50,25],[72,28],[14,49],[32,43],[50,51],[68,43],[86,49],[38,72],[62,72]],
+"5-3-2":[[50,12],[12,35],[30,28],[50,26],[70,28],[88,35],[30,51],[50,45],[70,51],[38,72],[62,72]],
+"5-4-1":[[50,12],[12,35],[30,28],[50,26],[70,28],[88,35],[18,51],[39,47],[61,47],[82,51],[50,75]],
+"4-1-4-1":[[50,12],[18,30],[39,27],[61,27],[82,30],[50,38],[18,57],[39,52],[61,52],[82,57],[50,75]],
+"4-2-2-2":[[50,12],[18,30],[39,27],[61,27],[82,30],[39,41],[61,41],[34,59],[66,59],[40,75],[60,75]],
+"4-3-2-1":[[50,12],[18,30],[39,27],[61,27],[82,30],[32,47],[50,43],[68,47],[38,62],[62,62],[50,77]],
+"4-5-1":[[50,12],[18,30],[39,27],[61,27],[82,30],[15,51],[33,46],[50,43],[67,46],[85,51],[50,75]],
+"3-4-1-2":[[50,12],[28,28],[50,25],[72,28],[15,51],[38,45],[62,45],[85,51],[50,61],[38,75],[62,75]]
+};
+
+function renderPitch(names=[]){
+ const pitch=$("pitch");
+ const selectedFormation=$("formation").value;
+ const positions=formations[selectedFormation]||formations["4-3-3"];
+
+ // Nur die Spieler entfernen. Spielfeldlinien und Mittelkreis bleiben erhalten.
+ pitch.querySelectorAll(".player").forEach(player=>player.remove());
+
+ const defaults=["Torwart","Verteidiger","Verteidiger","Verteidiger","Verteidiger","Mittelfeld","Mittelfeld","Mittelfeld","Stürmer","Stürmer","Stürmer"];
+
+ positions.forEach((pos,i)=>{
+  const el=document.createElement("div");
+  el.className="player";
+  el.style.left=pos[0]+"%";
+  el.style.top=pos[1]+"%";
+
+  const shirt=document.createElement("div");
+  shirt.className="shirt";
+  shirt.textContent=i===0?"TW":String(i);
+
+  const input=document.createElement("input");
+  input.type="text";
+  input.value=(names[i]!==undefined&&names[i]!==null&&names[i]!==""?names[i]:(defaults[i]||"Spieler "+(i+1)));
+  input.setAttribute("aria-label","Name Spieler "+(i+1));
+  input.addEventListener("input",save);
+
+  el.append(shirt,input);
+  pitch.append(el);
+ });
+}
+
+// WICHTIG: Beim Formationswechsel erst Namen sichern, dann die Spieler neu zeichnen.
+$("formation").addEventListener("change",()=>{
+ const currentNames=[...document.querySelectorAll(".player input")].map(input=>input.value);
+ renderPitch(currentNames);
+ save();
+});
+
+$("teamName").addEventListener("input",save);
+
+function resetLineup(){
+ if(!confirm("Aufstellung wirklich zurücksetzen?"))return;
+ $("teamName").value="Meine Mannschaft";
+ $("formation").value="4-3-3";
+ renderPitch([]);
+ save();
+}
+
 function load(){
  try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){state={}}
  $("teamName").value=state.teamName||"Meine Mannschaft";
@@ -168,97 +241,181 @@ function load(){
  $("trainingNotes").value=state.trainingNotes||"";
  renderPitch(state.playerNames||[]);
  initTournament(state.tournamentTeams,state.scores);
- renderExercises(state.exercises||[{name:"Aufwärmen",minutes:15,notes:"Locker anlaufen und mobilisieren"},{name:"Passspiel",minutes:20,notes:"Passen und freilaufen"},{name:"Spielform",minutes:30,notes:"Kleinfeldspiel"},{name:"Abschluss",minutes:15,notes:"Torschussübungen"},{name:"Abkühlen",minutes:10,notes:"Auslaufen"}]);
+ renderExercises(state.exercises||[
+  {name:"Aufwärmen",minutes:15,notes:"Locker anlaufen und mobilisieren"},
+  {name:"Passspiel",minutes:20,notes:"Passen und freilaufen"},
+  {name:"Spielform",minutes:30,notes:"Kleinfeldspiel"},
+  {name:"Abschluss",minutes:15,notes:"Torschussübungen"},
+  {name:"Abkühlen",minutes:10,notes:"Auslaufen"}
+ ]);
 }
-const formations={
-"4-3-3":[[50,88],[18,70],[39,73],[61,73],[82,70],[32,51],[50,56],[68,51],[23,28],[50,22],[77,28]],
-"4-4-2":[[50,88],[18,70],[39,73],[61,73],[82,70],[18,49],[39,52],[61,52],[82,49],[38,27],[62,27]],
-"4-2-3-1":[[50,88],[18,70],[39,73],[61,73],[82,70],[39,61],[61,61],[23,42],[50,40],[77,42],[50,23]],
-"3-4-3":[[50,88],[28,72],[50,75],[72,72],[15,49],[38,55],[62,55],[85,49],[23,29],[50,23],[77,29]],
-"3-5-2":[[50,88],[28,72],[50,75],[72,72],[14,51],[32,57],[50,49],[68,57],[86,51],[38,29],[62,29]],
-"5-3-2":[[50,88],[12,65],[30,72],[50,74],[70,72],[88,65],[30,49],[50,55],[70,49],[38,28],[62,28]],
-"5-4-1":[[50,88],[12,65],[30,72],[50,74],[70,72],[88,65],[18,49],[39,53],[61,53],[82,49],[50,26]],
-"4-1-4-1":[[50,88],[18,70],[39,73],[61,73],[82,70],[50,62],[18,43],[39,48],[61,48],[82,43],[50,25]],
-"4-2-2-2":[[50,88],[18,70],[39,73],[61,73],[82,70],[39,59],[61,59],[34,41],[66,41],[40,25],[60,25]],
-"4-3-2-1":[[50,88],[18,70],[39,73],[61,73],[82,70],[32,53],[50,57],[68,53],[38,38],[62,38],[50,23]],
-"4-5-1":[[50,88],[18,70],[39,73],[61,73],[82,70],[15,49],[33,54],[50,57],[67,54],[85,49],[50,25]],
-"3-4-1-2":[[50,88],[28,72],[50,75],[72,72],[15,49],[38,55],[62,55],[85,49],[50,39],[38,25],[62,25]]
-};
-function renderPitch(names){
- const pitch=$("pitch");pitch.querySelectorAll(".player").forEach(x=>x.remove());
- (formations[$("formation").value]||formations["4-3-3"]).forEach((pos,i)=>{
-  const el=document.createElement("div");el.className="player";el.style.left=pos[0]+"%";el.style.top=(100-pos[1])+"%";
-  const shirt=document.createElement("div");shirt.className="shirt";shirt.textContent=i===0?"TW":i;
-  const input=document.createElement("input");input.value=names[i]||(["Torwart","Verteidiger","Verteidiger","Verteidiger","Verteidiger","Mittelfeld","Mittelfeld","Mittelfeld","Stürmer","Stürmer","Stürmer"][i]||"Spieler "+(i+1));input.setAttribute("aria-label","Spieler "+(i+1));
-  input.addEventListener("input",save);el.append(shirt,input);pitch.append(el);
- });
-}
-$("formation").addEventListener("change",()=>{renderPitch();save()});
-$("teamName").addEventListener("input",save);
-function resetLineup(){if(!confirm("Aufstellung wirklich zurücksetzen?"))return;$("teamName").value="Meine Mannschaft";renderPitch([]);save()}
 
 const defaults=["Team A","Team B","Team C","Team D"];
 const pairings=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+
 function initTournament(names,scores){
- const box=$("teamInputs");box.innerHTML="";
- defaults.forEach((n,i)=>{const wrap=document.createElement("div");wrap.innerHTML='<label>Team '+(i+1)+'</label><input class="team-name">';wrap.querySelector("input").value=(names&&names[i])||n;wrap.querySelector("input").addEventListener("input",()=>{updateMatchNames();renderStandings();save()});box.append(wrap)});
+ const box=$("teamInputs");
+ box.innerHTML="";
+ defaults.forEach((name,i)=>{
+  const wrap=document.createElement("div");
+  wrap.innerHTML='<label>Team '+(i+1)+'</label><input class="team-name">';
+  wrap.querySelector("input").value=(names&&names[i])||name;
+  wrap.querySelector("input").addEventListener("input",()=>{
+   updateMatchNames();renderStandings();save();
+  });
+  box.append(wrap);
+ });
  buildMatches(scores||[]);
 }
-function updateMatchNames(){const names=[...document.querySelectorAll(".team-name")].map(x=>x.value||"Team");document.querySelectorAll(".match").forEach((m,i)=>{m.querySelector(".leftname").textContent=names[pairings[i][0]];m.querySelector(".rightname").textContent=names[pairings[i][1]]})}
-function buildMatches(scores){
- const box=$("matches");box.innerHTML="";
- pairings.forEach((p,i)=>{
-  const m=document.createElement("div");m.className="match";
-  const a=document.createElement("span");a.className="leftname";
-  const sa=document.createElement("input");sa.type="number";sa.min=0;sa.className="score";sa.placeholder="–";sa.setAttribute("aria-label","Tore Team links");
-  const sb=document.createElement("input");sb.type="number";sb.min=0;sb.className="score";sb.placeholder="–";sb.setAttribute("aria-label","Tore Team rechts");
-  const b=document.createElement("span");b.className="rightname";
-  sa.value=scores[i*2]??"";sb.value=scores[i*2+1]??"";
-  [sa,sb].forEach(x=>x.addEventListener("input",()=>{renderStandings();save()}));
-  m.append(a,sa,sb,b);box.append(m);
- });updateMatchNames();renderStandings();
+
+function updateMatchNames(){
+ const names=[...document.querySelectorAll(".team-name")].map(x=>x.value||"Team");
+ document.querySelectorAll(".match").forEach((match,i)=>{
+  match.querySelector(".leftname").textContent=names[pairings[i][0]];
+  match.querySelector(".rightname").textContent=names[pairings[i][1]];
+ });
 }
-function rebuildMatches(){if(!confirm("Spielplan neu erstellen? Die bisherigen Ergebnisse werden gelöscht."))return;buildMatches([]);save()}
+
+function buildMatches(scores){
+ const box=$("matches");
+ box.innerHTML="";
+ pairings.forEach((pair,i)=>{
+  const match=document.createElement("div");
+  match.className="match";
+  const left=document.createElement("span");left.className="leftname";
+  const scoreA=document.createElement("input");
+  scoreA.type="number";scoreA.min=0;scoreA.step=1;scoreA.className="score";scoreA.placeholder="–";
+  scoreA.setAttribute("aria-label","Tore des linken Teams");
+  const scoreB=document.createElement("input");
+  scoreB.type="number";scoreB.min=0;scoreB.step=1;scoreB.className="score";scoreB.placeholder="–";
+  scoreB.setAttribute("aria-label","Tore des rechten Teams");
+  const right=document.createElement("span");right.className="rightname";
+  scoreA.value=scores[i*2]??"";
+  scoreB.value=scores[i*2+1]??"";
+  [scoreA,scoreB].forEach(input=>input.addEventListener("input",()=>{
+   renderStandings();save();
+  }));
+  match.append(left,scoreA,scoreB,right);
+  box.append(match);
+ });
+ updateMatchNames();
+ renderStandings();
+}
+
+function rebuildMatches(){
+ if(!confirm("Spielplan neu erstellen? Die bisherigen Ergebnisse werden gelöscht."))return;
+ buildMatches([]);
+ save();
+}
+
 function renderStandings(){
  const names=[...document.querySelectorAll(".team-name")].map(x=>x.value.trim()||"Team");
  const teams=names.map((name,i)=>({name,i,played:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}));
- const matches=[...document.querySelectorAll(".match")];
- matches.forEach((m,k)=>{
-  const a=m.querySelectorAll(".score")[0].value,b=m.querySelectorAll(".score")[1].value;
-  if(a===""||b===""||a<0||b<0)return;
-  const x=Number(a),y=Number(b),t1=teams[pairings[k][0]],t2=teams[pairings[k][1]];
+ document.querySelectorAll(".match").forEach((match,k)=>{
+  const scores=match.querySelectorAll(".score");
+  const a=scores[0].value,b=scores[1].value;
+  if(a===""||b===""||Number(a)<0||Number(b)<0)return;
+  const x=Number(a),y=Number(b);
+  const t1=teams[pairings[k][0]],t2=teams[pairings[k][1]];
   t1.played++;t2.played++;t1.gf+=x;t1.ga+=y;t2.gf+=y;t2.ga+=x;
-  if(x>y){t1.w++;t1.pts+=3;t2.l++}else if(y>x){t2.w++;t2.pts+=3;t1.l++}else{t1.d++;t2.d++;t1.pts++;t2.pts++}
+  if(x>y){t1.w++;t1.pts+=3;t2.l++}
+  else if(y>x){t2.w++;t2.pts+=3;t1.l++}
+  else{t1.d++;t2.d++;t1.pts++;t2.pts++}
  });
  teams.forEach(t=>t.gd=t.gf-t.ga);
  teams.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf||a.name.localeCompare(b.name,"de"));
  $("standings").innerHTML="";
- teams.forEach((t,i)=>{const tr=document.createElement("tr");[i+1,t.name,t.played,t.w,t.d,t.l,t.gf+":"+t.ga,(t.gd>0?"+":"")+t.gd,t.pts].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});$("standings").append(tr)});
+ teams.forEach((team,i)=>{
+  const tr=document.createElement("tr");
+  [i+1,team.name,team.played,team.w,team.d,team.l,team.gf+":"+team.ga,(team.gd>0?"+":"")+team.gd,team.pts].forEach(value=>{
+   const td=document.createElement("td");td.textContent=value;tr.append(td);
+  });
+  $("standings").append(tr);
+ });
 }
-function resetTournament(){if(!confirm("Alle Turnierdaten löschen?"))return;initTournament(defaults,[]);save()}
+
+function resetTournament(){
+ if(!confirm("Alle Turnierdaten löschen?"))return;
+ initTournament(defaults,[]);
+ save();
+}
 
 function renderExercises(items){
- const box=$("exercises");box.innerHTML="";
+ const box=$("exercises");
+ box.innerHTML="";
  items.forEach(item=>{
-  const e=document.createElement("div");e.className="exercise";
-  e.innerHTML='<div class="wide"><label>Übung</label><input class="ex-name" placeholder="Name der Übung"></div><div><label>Minuten</label><input class="ex-min" type="number" min="0" value="10"></div><div class="wide"><label>Beschreibung</label><input class="ex-notes" placeholder="Ablauf / Material"></div><button aria-label="Übung löschen">✕</button>';
-  e.querySelector(".ex-name").value=item.name||"";e.querySelector(".ex-min").value=item.minutes??10;e.querySelector(".ex-notes").value=item.notes||"";
-  e.querySelectorAll("input").forEach(x=>x.addEventListener("input",()=>{updateDuration();save()}));
-  e.querySelector("button").addEventListener("click",()=>{e.remove();updateDuration();save()});
+  const e=document.createElement("div");
+  e.className="exercise";
+  e.innerHTML='<div class="wide"><label>Übung</label><input class="ex-name" placeholder="Name der Übung"></div><div><label>Minuten</label><input class="ex-min" type="number" min="0" value="10"></div><div class="wide"><label>Beschreibung</label><input class="ex-notes" placeholder="Ablauf / Material"></div><button type="button" aria-label="Übung löschen">✕</button>';
+  e.querySelector(".ex-name").value=item.name||"";
+  e.querySelector(".ex-min").value=item.minutes??10;
+  e.querySelector(".ex-notes").value=item.notes||"";
+  e.querySelectorAll("input").forEach(input=>input.addEventListener("input",()=>{
+   updateDuration();save();
+  }));
+  e.querySelector("button").addEventListener("click",()=>{
+   e.remove();updateDuration();save();
+  });
   box.append(e);
- });updateDuration();
+ });
+ updateDuration();
 }
-function addExercise(){const items=[...document.querySelectorAll(".exercise")].map(e=>({name:e.querySelector(".ex-name").value,minutes:e.querySelector(".ex-min").value,notes:e.querySelector(".ex-notes").value}));items.push({name:"Neue Übung",minutes:10,notes:""});renderExercises(items);save()}
-function updateDuration(){let total=0;document.querySelectorAll(".ex-min").forEach(x=>total+=Math.max(0,Number(x.value)||0));$("totalDuration").textContent=total+" Min.";$("exerciseCount").textContent=document.querySelectorAll(".exercise").length}
-function resetTraining(){if(!confirm("Trainingsplan zurücksetzen?"))return;renderExercises([]);$("trainingTitle").value="";$("trainingDate").value="";$("trainingNotes").value="";save()}
+
+function addExercise(){
+ const items=[...document.querySelectorAll(".exercise")].map(e=>({
+  name:e.querySelector(".ex-name").value,
+  minutes:e.querySelector(".ex-min").value,
+  notes:e.querySelector(".ex-notes").value
+ }));
+ items.push({name:"Neue Übung",minutes:10,notes:""});
+ renderExercises(items);
+ save();
+}
+
+function updateDuration(){
+ let total=0;
+ document.querySelectorAll(".ex-min").forEach(input=>total+=Math.max(0,Number(input.value)||0));
+ $("totalDuration").textContent=total+" Min.";
+ $("exerciseCount").textContent=document.querySelectorAll(".exercise").length;
+}
+
+function resetTraining(){
+ if(!confirm("Trainingsplan zurücksetzen?"))return;
+ renderExercises([]);
+ $("trainingTitle").value="";
+ $("trainingDate").value="";
+ $("trainingFocus").value="Technik";
+ $("trainingNotes").value="";
+ save();
+}
+
 ["trainingTitle","trainingDate","trainingFocus","trainingNotes"].forEach(id=>$(id).addEventListener("input",save));
 ["distance","flightTime"].forEach(id=>$(id).addEventListener("input",calcSpeed));
-function calcSpeed(){const d=Number($("distance").value),t=Number($("flightTime").value);$("speedResult").textContent=d>=0&&t>0?(d/t*3.6).toLocaleString("de-DE",{maximumFractionDigits:1})+" km/h":"–"}
-function calcSession(){const total=Math.max(0,Number($("sessionMinutes").value)||0),p=Math.min(100,Math.max(0,Number($("warmPercent").value)||0));$("warmResult").textContent=Math.round(total*p/100)+" Min.";$("restResult").textContent=Math.round(total*(1-p/100))+" Min."}
+
+function calcSpeed(){
+ const distance=Number($("distance").value),time=Number($("flightTime").value);
+ $("speedResult").textContent=distance>=0&&time>0?(distance/time*3.6).toLocaleString("de-DE",{maximumFractionDigits:1})+" km/h":"–";
+}
+
+function calcSession(){
+ const total=Math.max(0,Number($("sessionMinutes").value)||0);
+ const percent=Math.min(100,Math.max(0,Number($("warmPercent").value)||0));
+ $("warmResult").textContent=Math.round(total*percent/100)+" Min.";
+ $("restResult").textContent=Math.round(total*(1-percent/100))+" Min.";
+}
 ["sessionMinutes","warmPercent"].forEach(id=>$(id).addEventListener("input",calcSession));
-function calcAccuracy(){const g=Math.max(0,Number($("goals").value)||0),s=Math.max(0,Number($("shots").value)||0);$("accuracyResult").textContent=s?(g/s*100).toLocaleString("de-DE",{maximumFractionDigits:1})+" %":"–"}
+
+function calcAccuracy(){
+ const goals=Math.max(0,Number($("goals").value)||0);
+ const shots=Math.max(0,Number($("shots").value)||0);
+ $("accuracyResult").textContent=shots?(goals/shots*100).toLocaleString("de-DE",{maximumFractionDigits:1})+" %":"–";
+}
 ["goals","shots"].forEach(id=>$(id).addEventListener("input",calcAccuracy));
-load();calcSpeed();calcSession();calcAccuracy();
+
+load();
+calcSpeed();
+calcSession();
+calcAccuracy();
 </script>
 </body>
 </html>
