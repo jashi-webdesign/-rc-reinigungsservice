@@ -4,113 +4,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KickTools – Fußball smarter planen</title>
+<title>KickTools – Fußball-Tools</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#f4f7fb}
+body{margin:0;background:#0b1220;color:#f4f7fb;font-family:Arial,sans-serif}
 header{padding:22px 18px;border-bottom:1px solid #293447}
-.logo{font-size:25px;font-weight:800;color:#9be564}
-header p{color:#aab5c7;margin-bottom:0}
-main{max-width:900px;margin:auto;padding:22px 16px}
-.panel{background:#151f30;border:1px solid #2a394e;border-radius:16px;padding:18px;margin-bottom:18px}
+.logo{font-size:27px;font-weight:800;color:#9be564}
+header p,.muted{color:#aab5c7}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+nav a{color:#e9f3ff;text-decoration:none;background:#202d40;padding:10px 13px;border-radius:8px}
+main{max-width:950px;margin:auto;padding:20px 14px}
+.panel{background:#151f30;border:1px solid #2a394e;border-radius:15px;padding:17px;margin-bottom:18px}
 h2{margin-top:0}
 label{display:block;margin:12px 0 6px;color:#cbd5e1}
-input,select,button{font:inherit;border-radius:9px;padding:11px;border:1px solid #46556a}
-input,select{background:#0b1220;color:white;width:100%}
+input,select,button{font:inherit;padding:10px;border-radius:8px;border:1px solid #46556a}
+input,select{background:#0b1220;color:white;width:100%;min-width:0}
 button{background:#9be564;color:#10200a;border:0;font-weight:bold;cursor:pointer}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pitch{position:relative;background:#267943;border:3px solid white;border-radius:8px;aspect-ratio:0.72;max-height:650px;margin:18px auto;overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pitch{position:relative;background:#267943;border:3px solid white;border-radius:7px;aspect-ratio:.72;max-height:650px;margin:18px auto;overflow:hidden}
 .pitch:before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid #ffffffaa}
-.pitch:after{content:"";position:absolute;width:30%;aspect-ratio:1;left:35%;top:calc(50% - 15%);border:2px solid #ffffffaa;border-radius:50%}
+.pitch:after{content:"";position:absolute;width:28%;aspect-ratio:1;left:36%;top:36%;border:2px solid #ffffffaa;border-radius:50%}
 .boxline{position:absolute;left:22%;width:56%;height:13%;border:2px solid #ffffffaa}
-.boxline.top{top:0;border-top:0}
-.boxline.bottom{bottom:0;border-bottom:0}
-.players{position:absolute;inset:0;display:grid;grid-template-rows:repeat(4,1fr);align-items:center;justify-items:center;padding:8px 4px}
-.line{display:flex;justify-content:space-evenly;align-items:center;width:100%;gap:3px}
-.player{display:flex;flex-direction:column;align-items:center;width:24%;min-width:0;gap:4px}
-.shirt{display:grid;place-items:center;background:#e9f3ff;color:#10233c;border-radius:10px 10px 5px 5px;width:35px;height:32px;font-size:12px;font-weight:bold;border:2px solid white}
-.player input{font-size:10px;padding:5px 2px;text-align:center;border:0;background:#143f29;min-width:0;width:100%;border-radius:5px}
-.note{font-size:13px;color:#b9c5d6;line-height:1.5}
-footer{text-align:center;color:#9eacc0;padding:22px;font-size:13px}
-@media(min-width:600px){.pitch{aspect-ratio:0.95}.player{width:18%}.shirt{width:42px;height:38px}}
+.boxline.top{top:0;border-top:0}.boxline.bottom{bottom:0;border-bottom:0}
+.players{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:7px 2px}
+.line{display:flex;justify-content:space-evenly;align-items:center;width:100%;gap:2px}
+.player{display:flex;flex-direction:column;align-items:center;width:24%;min-width:0;gap:3px}
+.shirt{display:grid;place-items:center;background:#e9f3ff;color:#10233c;border-radius:9px 9px 4px 4px;width:33px;height:29px;font-size:11px;font-weight:bold;border:2px solid white}
+.player input{font-size:10px;padding:5px 1px;text-align:center;border:0;background:#143f29;min-width:0;width:100%;border-radius:5px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}
+th,td{padding:10px 7px;text-align:center;border-bottom:1px solid #344258}
+th{color:#9be564}
+td:first-child,th:first-child{text-align:left}
+.scoreline{display:grid;grid-template-columns:minmax(0,1fr) 48px 14px 48px minmax(0,1fr);align-items:center;gap:6px;margin:12px 0}
+.scoreline input{padding:8px;text-align:center}
+.scoreline span{text-align:center}
+.scoreline .teamname{font-size:13px;overflow:hidden;text-overflow:ellipsis}
+.note{font-size:13px;line-height:1.5;color:#aab5c7}
+footer{text-align:center;color:#9eacc0;padding:24px;font-size:13px}
+@media(min-width:650px){.pitch{aspect-ratio:.95}.player{width:18%}.shirt{width:42px;height:36px}.scoreline{grid-template-columns:minmax(0,1fr) 60px 18px 60px minmax(0,1fr)}}
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">⚽ KickTools</div>
-  <p>Plane dein Spiel. Stärke dein Team.</p>
+ <div class="logo">⚽ KickTools</div>
+ <p>Plane dein Spiel. Stärke dein Team.</p>
+ <nav>
+  <a href="#aufstellung">Aufstellung</a>
+  <a href="#tabelle">Tabellenrechner</a>
+ </nav>
 </header>
 <main>
-  <section class="panel">
-    <h2>Aufstellungsplaner</h2>
-    <p class="note">Wähle eine Formation und trage die Namen deiner Spieler ein.</p>
-    <div class="controls">
-      <div>
-        <label for="team">Teamname</label>
-        <input id="team" placeholder="Mein Fußballteam" maxlength="50">
-      </div>
-      <div>
-        <label for="formation">Formation</label>
-        <select id="formation">
-          <option value="433">4-3-3</option>
-          <option value="442">4-4-2</option>
-          <option value="4231">4-2-3-1</option>
-        </select>
-      </div>
-    </div>
-  </section>
-  <section class="panel">
-    <h2 id="pitchTitle">Meine Aufstellung</h2>
-    <div class="pitch">
-      <div class="boxline top"></div>
-      <div class="boxline bottom"></div>
-      <div class="players" id="players"></div>
-    </div>
-    <button id="reset" type="button">Namen zurücksetzen</button>
-    <p class="note">Tipp: Tippe auf die Spielernamen unter den Trikots, um sie zu ändern.</p>
-  </section>
-  <section class="panel">
-    <h2>Mehr Fußball-Tools kommen bald</h2>
-    <p>Spielplaner, Trainingsideen und Tabellenrechner sind für zukünftige Versionen geplant.</p>
-  </section>
+<section class="panel" id="aufstellung">
+ <h2>⚽ Aufstellungsplaner</h2>
+ <p class="note">Wähle deine Formation und bearbeite die Spielernamen direkt auf dem Spielfeld.</p>
+ <div class="grid">
+  <div><label for="team">Teamname</label><input id="team" placeholder="Mein Fußballteam" maxlength="50"></div>
+  <div><label for="formation">Formation</label>
+   <select id="formation">
+    <option value="433">4-3-3</option>
+    <option value="442">4-4-2</option>
+    <option value="4231">4-2-3-1</option>
+    <option value="343">3-4-3</option>
+    <option value="352">3-5-2</option>
+    <option value="532">5-3-2</option>
+    <option value="541">5-4-1</option>
+    <option value="4141">4-1-4-1</option>
+    <option value="4222">4-2-2-2</option>
+    <option value="3412">3-4-1-2</option>
+    <option value="3421">3-4-2-1</option>
+    <option value="451">4-5-1</option>
+    <option value="4321">4-3-2-1</option>
+    <option value="343diamond">3-3-1-3</option>
+   </select>
+  </div>
+ </div>
+ <h3 id="pitchTitle">Meine Aufstellung</h3>
+ <div class="pitch"><div class="boxline top"></div><div class="boxline bottom"></div><div class="players" id="players"></div></div>
+ <button id="reset" type="button">Namen zurücksetzen</button>
+</section>
+
+<section class="panel" id="tabelle">
+ <h2>🏆 Tabellenrechner</h2>
+ <p class="note">Trage vier Teamnamen und die Ergebnisse der sechs direkten Duelle ein. Die Tabelle berechnet sich automatisch nach Punkten, Tordifferenz und erzielten Toren.</p>
+ <h3>1. Teams</h3>
+ <div class="grid" id="teams"></div>
+ <h3>2. Spielergebnisse</h3>
+ <div id="matches"></div>
+ <button id="clearScores" type="button">Ergebnisse zurücksetzen</button>
+ <h3>3. Tabelle</h3>
+ <div class="tablewrap">
+ <table>
+  <thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff.</th><th>Pkt.</th></tr></thead>
+  <tbody id="standings"></tbody>
+ </table>
+ </div>
+ <p class="note">Regel: Sieg = 3 Punkte, Unentschieden = 1 Punkt. Bei Punktgleichheit entscheiden Tordifferenz und erzielte Tore. Die Tabelle verwendet die eingegebenen Ergebnisse.</p>
+</section>
+<section class="panel">
+ <h2>🚀 Weitere Tools</h2>
+ <p>Als Nächstes geplant: Spielplaner, Trainingsplaner und weitere Fußballrechner.</p>
+</section>
 </main>
-<footer>KickTools · Ein unabhängiges Fußballprojekt</footer>
+<footer>KickTools · Unabhängiges Fußballprojekt</footer>
+
 <script>
-const formations = {
-  "433":[1,4,3,3],
-  "442":[1,4,4,2],
-  "4231":[1,4,2,3,1]
+const formations={
+ "433":[1,4,3,3],"442":[1,4,4,2],"4231":[1,4,2,3,1],
+ "343":[1,3,4,3],"352":[1,3,5,2],"532":[1,5,3,2],
+ "541":[1,5,4,1],"4141":[1,4,1,4,1],
+ "4222":[1,4,2,2,2],"3412":[1,3,4,1,2],
+ "3421":[1,3,4,2,1],"451":[1,4,5,1],
+ "4321":[1,4,3,2,1],"343diamond":[1,3,3,1,3]
 };
-const players = document.getElementById("players");
+const players=document.getElementById("players");
 function draw(){
-  players.innerHTML="";
-  formations[document.getElementById("formation").value].forEach((count,row)=>{
-    const line=document.createElement("div");
-    line.className="line";
-    for(let i=0;i<count;i++){
-      const p=document.createElement("div");
-      p.className="player";
-      const shirt=document.createElement("div");
-      shirt.className="shirt";
-      shirt.textContent=row===0?"TW":String(row*3+i+1);
-      const name=document.createElement("input");
-      name.placeholder=row===0?"Torwart":"Spieler "+(row*3+i+1);
-      name.setAttribute("aria-label","Spielername");
-      name.maxLength=24;
-      p.append(shirt,name);
-      line.append(p);
-    }
-    players.append(line);
-  });
+ players.innerHTML="";
+ let number=1;
+ formations[document.getElementById("formation").value].forEach((count,row)=>{
+  const line=document.createElement("div");line.className="line";
+  for(let i=0;i<count;i++){
+   const p=document.createElement("div");p.className="player";
+   const shirt=document.createElement("div");shirt.className="shirt";
+   shirt.textContent=row===0?"TW":number;
+   const name=document.createElement("input");
+   name.placeholder=row===0?"Torwart":"Spieler "+number;
+   name.setAttribute("aria-label","Name von Spieler "+number);
+   name.maxLength=24;
+   p.append(shirt,name);line.append(p);number++;
+  }
+  players.append(line);
+ });
 }
 document.getElementById("formation").addEventListener("change",draw);
 document.getElementById("team").addEventListener("input",e=>{
-  document.getElementById("pitchTitle").textContent=e.target.value.trim()||"Meine Aufstellung";
+ document.getElementById("pitchTitle").textContent=e.target.value.trim()||"Meine Aufstellung";
 });
 document.getElementById("reset").addEventListener("click",()=>{
-  players.querySelectorAll("input").forEach(input=>input.value="");
+ players.querySelectorAll("input").forEach(i=>i.value="");
 });
-draw();
+
+const teamsEl=document.getElementById("teams");
+const matchesEl=document.getElementById("matches");
+const standingsEl=document.getElementById("standings");
+const initialTeams=["Team A","Team B","Team C","Team D"];
+const games=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+initialTeams.forEach((name,i)=>{
+ const wrap=document.createElement("div");
+ const label=document.createElement("label");label.textContent="Team "+(i+1);
+ const input=document.createElement("input");input.value=name;input.maxLength=35;
+ input.dataset.team=i;input.setAttribute("aria-label","Name Team "+(i+1));
+ input.addEventListener("input",update);
+ wrap.append(label,input);teamsEl.append(wrap);
+});
+games.forEach(([a,b],i)=>{
+ const row=document.createElement("div");row.className="scoreline";
+ const left=document.createElement("span");left.className="teamname";
+ const home=document.createElement("input");home.type="number";home.min=0;home.max=99;home.placeholder="–";
+ home.setAttribute("aria-label","Tore Team "+(a+1));
+ const dash=document.createElement("span");dash.textContent=":";
+ const away=document.createElement("input");away.type="number";away.min=0;away.max=99;away.placeholder="–";
+ away.setAttribute("aria-label","Tore Team "+(b+1));
+ const right=document.createElement("span");right.className="teamname";
+ home.addEventListener("input",update);away.addEventListener("input",update);
+ home.dataset.game=i;away.dataset.game=i;
+ row.append(left,home,dash,away,right);matchesEl.append(row);
+});
+function update(){
+ const names=[...teamsEl.querySelectorAll("input")].map((el,i)=>el.value.trim()||"Team "+(i+1));
+ [...matchesEl.children].forEach((row,i)=>{
+  row.children[0].textContent=names[games[i][0]];
+  row.children[4].textContent=names[games[i][1]];
+ });
+ const stats=names.map((name,i)=>({name,i,played:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}));
+ games.forEach(([a,b],i)=>{
+  const row=matchesEl.children[i];
+  const hs=row.children[1].value,as=row.children[3].value;
+  if(hs===""||as===""||Number(hs)<0||Number(as)<0)return;
+  const h=Number(hs),v=Number(as);
+  if(!Number.isInteger(h)||!Number.isInteger(v)||h>99||v>99)return;
+  const x=stats[a],y=stats[b];
+  x.played++;y.played++;x.gf+=h;x.ga+=v;y.gf+=v;y.ga+=h;
+  if(h>v){x.w++;y.l++;x.pts+=3}
+  else if(h<v){y.w++;x.l++;y.pts+=3}
+  else{x.d++;y.d++;x.pts++;y.pts++}
+ });
+ stats.sort((x,y)=>y.pts-x.pts||(y.gf-y.ga)-(x.gf-x.ga)||y.gf-x.gf||x.name.localeCompare(y.name));
+ standingsEl.innerHTML="";
+ stats.forEach((s,i)=>{
+  const tr=document.createElement("tr");
+  [i+1,s.name,s.played,s.w,s.d,s.l,s.gf+":"+s.ga,s.gf-s.ga,s.pts].forEach(v=>{
+   const td=document.createElement("td");td.textContent=v;tr.append(td);
+  });
+  standingsEl.append(tr);
+ });
+}
+document.getElementById("clearScores").addEventListener("click",()=>{
+ matchesEl.querySelectorAll("input").forEach(i=>i.value="");update();
+});
+draw();update();
 </script>
 </body>
 </html>
