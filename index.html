@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="R&C Reinigungsservice in Wuppertal – Gebäudereinigung, Fensterreinigung und Hausmeisterservice.">
+  <title>R&C Reinigungsservice | Sauber. Zuverlässig. Professionell.</title>
+  <style>
+    :root {
+      --dark: #101b2b;
+      --dark2: #18283b;
+      --mint: #a7f3d0;
+      --white: #ffffff;
+      --muted: #b9c5d3;
+      --light: #f4f7fa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--dark);
+      line-height: 1.6;
+      background: var(--white);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1120px, 90%);
+      margin: auto;
+    }
+
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 22px 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .logo span { color: var(--mint); }
+
+    nav {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    nav a:hover { color: var(--mint); }
+
+    .hero {
+      background:
+        radial-gradient(ellipse at 85% 20%, #2c4c59 0%, transparent 42%),
+        linear-gradient(125deg, var(--dark), var(--dark2));
+      color: white;
+      padding: 105px 0 110px;
+    }
+
+    .eyebrow {
+      color: var(--mint);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 25px;
+    }
+
+    h1 span { color: var(--mint); }
+
+    .hero p {
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 1.12rem;
+      margin-bottom: 32px;
+    }
+
+    .button {
+      display: inline-block;
+      background: var(--mint);
+      color: var(--dark);
+      padding: 14px 23px;
+      border-radius: 7px;
+      font-weight: 800;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: #c3f9e0;
+    }
+
+    .section { padding: 82px 0; }
+
+    .section-light { background: var(--light); }
+
+    .section-label {
+      color: #16866b;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+    }
+
+    .intro {
+      max-width: 650px;
+      color: #5d6b7b;
+      margin-bottom: 38px;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .service {
+      background: white;
+      border: 1px solid #e4eaf0;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 8px 30px rgba(16, 27, 43, 0.04);
+    }
+
+    .service-number {
+      color: #16866b;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+
+    .service h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    .service p { color: #657384; font-size: 0.96rem; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    .about-panel {
+      background: var(--dark);
+      color: white;
+      padding: 38px;
+      border-radius: 16px;
+    }
+
+    .about-panel h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .about-panel p { color: var(--muted); }
+
+    .about-copy p {
+      color: #5d6b7b;
+      margin-bottom: 16px;
+    }
+
+    .contact {
+      background: var(--dark);
+      color: white;
+    }
+
+    .contact .section-label { color: var(--mint); }
+
+    .contact .intro { color: var(--muted); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    .contact-card {
+      border: 1px solid #344457;
+      border-radius: 12px;
+      padding: 25px;
+    }
+
+    .contact-card h3 {
+      color: var(--mint);
+      margin-bottom: 8px;
+    }
+
+    .contact-card p { color: var(--muted); }
+
+    .contact-card a {
+      color: white;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    footer {
+      background: #0b1320;
+      color: #9ba9b9;
+      padding: 25px 0;
+      font-size: 0.85rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .notice {
+      background: #fff8df;
+      color: #55461b;
+      padding: 13px 0;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .nav { align-items: flex-start; flex-direction: column; }
+      nav { flex-wrap: wrap; gap: 15px; }
+      .hero { padding: 75px 0; }
+      .services, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .about-grid { gap: 25px; }
+      .section { padding: 60px 0; }
+      h1 { letter-spacing: -1px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notice">
+    Website-Konzept zur unverbindlichen Ansicht – keine offizielle Website des Unternehmens.
+  </div>
+
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#start">R<span>&</span>C REINIGUNGSSERVICE</a>
+      <nav aria-label="Hauptnavigation">
+        <a href="#leistungen">Leistungen</a>
+        <a href="#ueber-uns">Über uns</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="start">
+      <div class="container">
+        <div class="eyebrow">Reinigungsservice in Wuppertal</div>
+        <h1>Sauberkeit, die man <span>sieht.</span></h1>
+        <p>
+          Gepflegte Räume und saubere Oberflächen machen einen Unterschied.
+          Entdecken Sie unsere Übersicht rund um Gebäudereinigung,
+          Fensterreinigung und Hausmeisterservice.
+        </p>
+        <a class="button" href="#kontakt">Kontakt aufnehmen →</a>
+      </div>
+    </section>
+
+    <section class="section section-light" id="leistungen">
+      <div class="container">
+        <div class="section-label">Unsere Leistungen</div>
+        <h2>Saubere Lösungen für Ihren Alltag.</h2>
+        <p class="intro">
+          Ob Innenräume, Glasflächen oder die Betreuung eines Gebäudes:
+          Die passenden Reinigungs- und Serviceleistungen sorgen für einen
+          gepflegten Gesamteindruck.
+        </p>
+
+        <div class="services">
+          <article class="service">
+            <div class="service-number">LEISTUNG 01</div>
+            <h3>Gebäudereinigung</h3>
+            <p>
+              Ein gepflegtes Umfeld für Gebäude und Innenbereiche.
+              Umfang und Rhythmus können individuell abgestimmt werden.
+            </p>
+          </article>
+
+          <article class="service">
+            <div class="service-number">LEISTUNG 02</div>
+            <h3>Fensterreinigung</h3>
+            <p>
+              Saubere Glasflächen tragen zu einem hellen und ordentlichen
+              Eindruck bei – im privaten und gewerblichen Umfeld.
+            </p>
+          </article>
+
+          <article class="service">
+            <div class="service-number">LEISTUNG 03</div>
+            <h3>Hausmeisterservice</h3>
+            <p>
+              Unterstützung bei der Betreuung und Pflege von Immobilien
+              und gemeinschaftlich genutzten Bereichen.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ueber-uns">
+      <div class="container about-grid">
+        <div class="about-copy">
+          <div class="section-label">Über den Service</div>
+          <h2>Ein gepflegtes Gebäude beginnt mit Aufmerksamkeit.</h2>
+          <p>
+            Ein sauberer Arbeitsplatz, ordentliche Gemeinschaftsflächen
+            und gepflegte Glasflächen schaffen einen positiven Eindruck.
+          </p>
+          <p>
+            Dieser Website-Entwurf stellt mögliche Informationen und
+            Leistungen übersichtlich dar. Aussagen zu konkreten Abläufen,
+            Preisen oder Garantien müssen vor einer Veröffentlichung
+            vom Unternehmen bestätigt werden.
+          </p>
+        </div>
+
+        <div class="about-panel">
+          <h3>Was zählt?</h3>
+          <p>
+            Klare Absprachen, passende Leistungen und eine gute Erreichbarkeit
+            helfen dabei, die richtige Reinigungslösung zu finden.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="kontakt">
+      <div class="container">
+        <div class="section-label">Kontakt</div>
+        <h2>Sie möchten mehr erfahren?</h2>
+        <p class="intro">
+          Für Anfragen zu Leistungen und Terminen können Sie die folgenden
+          Kontaktdaten nutzen. Bitte prüfen Sie die Angaben vor einer
+          Veröffentlichung.
+        </p>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>Telefon</h3>
+            <p>
+              <a href="tel:+4920229531205">0202 29531205</a>
+            </p>
+          </div>
+
+          <div class="contact-card">
+            <h3>Adresse</h3>
+            <p>Anilinstr. 8<br>42115 Wuppertal</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> R&C Reinigungsservice – Website-Konzept</span>
+      <span>Entwurf, nicht offiziell freigegeben</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
